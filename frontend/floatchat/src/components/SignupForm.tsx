@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from './ThemeContext';
 
 interface SignupFormProps {
   onToggleMode: () => void;
@@ -11,6 +12,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode, onSignedIn
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { theme, toggleTheme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,6 +38,12 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode, onSignedIn
 
   return (
     <div className="auth-page">
+      <div className="auth-topbar">
+        <div className="auth-brand">FloatChat</div>
+        <button className="nav-btn" onClick={toggleTheme} aria-label="Toggle theme">
+          {theme === 'dark' ? 'Light' : 'Dark'} mode
+        </button>
+      </div>
       <div className="auth-card">
         <h2 className="auth-title">Welcome back</h2>
         <p className="auth-subtitle">Sign in to your account to continue</p>

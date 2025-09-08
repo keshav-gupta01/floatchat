@@ -1,0 +1,12 @@
+:root {
+  --bg: #fff;
+  --fg: #222;
+}
+.dark {
+  --bg: #18181b;
+  --fg: #f4f4f5;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  transition: background 0.2s, color 0.2s;

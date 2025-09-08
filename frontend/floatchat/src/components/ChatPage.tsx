@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./ChatMessage.css";
 import { FaRegThumbsUp, FaRegThumbsDown, FaPaperclip, FaRegSmile, FaMicrophone } from "react-icons/fa";
 import bot from "../assets/bot.svg";
+import { useTheme } from "./ThemeContext";
 
 type Msg = { message: string; isUser: boolean; timestamp: string; reaction?: 'up' | 'down' | null };
 
@@ -49,6 +50,7 @@ const ChatPage: React.FC = () => {
           FloatChat
         </div>
         <div className="nav-actions">
+          <ThemeToggle />
           <Link className="nav-btn" to="/signin">Log in</Link>
           <Link className="nav-btn primary" to="/signin">Sign up</Link>
         </div>
@@ -135,3 +137,12 @@ const ChatPage: React.FC = () => {
 };
 
 export default ChatPage; 
+
+const ThemeToggle: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button className="nav-btn" onClick={toggleTheme} aria-label="Toggle theme">
+      {theme === 'dark' ? 'Light' : 'Dark'} mode
+    </button>
+  );
+};
