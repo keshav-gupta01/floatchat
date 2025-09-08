@@ -1,9 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./ChatMessage.css";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegThumbsDown, FaPaperclip, FaRegSmile, FaMicrophone } from "react-icons/fa";
+import bot from "../assets/bot.svg";
 
 type Msg = { message: string; isUser: boolean; timestamp: string; reaction?: 'up' | 'down' | null };
+
+const suggestions = [
+  "Summarize this text",
+  "Write an email draft",
+  "Generate ideas for a post",
+  "Explain a concept simply"
+];
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Array<Msg>>([]);
@@ -48,9 +56,21 @@ const ChatPage: React.FC = () => {
 
       <div className="chatgpt-main" ref={listRef}>
         <div className="chatgpt-container">
+          <div className="chat-header">
+            <div className="chat-title">Welcome back</div>
+            <div className="chat-subtitle">Ask anything or pick a suggestion to get started.</div>
+            {messages.length === 0 && (
+              <div className="suggestions">
+                {suggestions.map((s) => (
+                  <button key={s} className="suggestion" onClick={() => setInput(s)}>{s}</button>
+                ))}
+              </div>
+            )}
+          </div>
+
           {messages.length === 0 ? (
             <div className="message-row assistant">
-              <div className="message-avatar">AI</div>
+              <div className="message-avatar img"><img src={bot} alt="AI" /></div>
               <div className="message-content">
                 <div className="bubble">
                   <div className="message-text">How can I help you today?</div>
@@ -66,7 +86,7 @@ const ChatPage: React.FC = () => {
 
           {messages.map((m, i) => (
             <div key={i} className={`message-row ${m.isUser ? 'user' : 'assistant'}`}>
-              <div className="message-avatar">{m.isUser ? 'U' : 'AI'}</div>
+              <div className={m.isUser ? "message-avatar" : "message-avatar img"}>{m.isUser ? 'U' : <img src={bot} alt="AI" />}</div>
               <div className="message-content">
                 {m.isUser ? (
                   <>
@@ -95,13 +115,18 @@ const ChatPage: React.FC = () => {
 
       <div className="chatgpt-composer">
         <div className="composer-inner">
-          <input
-            className="composer-input"
-            placeholder="Type your message here..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
-          />
+          <div className="composer-pill">
+            <button className="composer-icon" aria-label="Attach file"><FaPaperclip size={16} /></button>
+            <input
+              className="composer-input"
+              placeholder="Type your message here..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
+            />
+            <button className="composer-icon" aria-label="Emoji"><FaRegSmile size={16} /></button>
+            <button className="composer-icon" aria-label="Voice"><FaMicrophone size={16} /></button>
+          </div>
           <button className="composer-send" onClick={send}>➤</button>
         </div>
       </div>
